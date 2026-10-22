@@ -1,9 +1,9 @@
 # AppRoomProduto: Cadastro de Produtos com Room SQLite
 
-**Aluno(a):** Giovanni  
-**RA:** [Seu RA]  
+**Aluno(a):** Giovana Taboada  
+**RA:** 230410
 **Disciplina:** Desenvolvimento de Aplicativos Móveis  
-**Professor(a):** [Nome do Professor]  
+**Professor(a):** Alessandro  
 
 ## Sobre o projeto
 Aplicativo Android em Kotlin desenvolvido para a Unisanta que cadastra, lista, busca, atualiza e exclui produtos utilizando persistência local com Room (SQLite), ViewBinding e Corrotinas (`lifecycleScope`).
@@ -15,8 +15,7 @@ Aplicativo Android em Kotlin desenvolvido para a Unisanta que cadastra, lista, b
 - Corrotinas (`lifecycleScope`)
 
 ## Prints do app
-![Tela inicial](docs/prints/tela-inicial.png)
-![Listagem na tela](docs/prints/listagem.png)
+![Projeto base fornecido pelo professor](docs/prints/print_professor.png)
 
 ## Parte A: Complemento prático
 
@@ -30,7 +29,7 @@ binding.editProductDescription.text.clear()
 binding.editProductQuantity.text.clear()
 binding.editProductName.requestFocus()
 ```
-**Print:** ![A1](docs/prints/a1.png)
+**Print:** ![A1](docs/prints/print_a1.png)
 
 ### A2. Validação de preço
 **O que foi feito:** Impidimos salvar produtos com preço vazio, zero ou negativo, exibindo uma mensagem de erro diretamente no campo de preço.  
@@ -42,7 +41,7 @@ if (priceText.isEmpty() || price <= 0.0) {
     return@setOnClickListener
 }
 ```
-**Print:** ![A2](docs/prints/a2.png)
+**Print:** ![A2](docs/prints/print_a2.png)
 
 ### A3. Lista na tela
 **O que foi feito:** Adicionamos um `ScrollView` contendo um `TextView` abaixo dos botões para exibir a lista de produtos cadastrados diretamente na interface do app.  
@@ -54,7 +53,7 @@ products.forEach {
 }
 binding.textProductList.text = sb.toString()
 ```
-**Print:** ![A3](docs/prints/a3.png)
+**Print:** ![A3](docs/prints/print_a3.png)
 
 ### A4. Total do estoque
 - **O que foi feito:** Exibimos junto à listagem a quantidade total de produtos cadastrados (`products.size`) e a soma dos preços (`products.sumOf { it.price }`).  
@@ -64,7 +63,7 @@ val totalCount = products.size
 val totalPrice = products.sumOf { it.price }
 sb.append("Quantidade cadastrados: $totalCount | Soma preços: R$$totalPrice\n\n")
 ```
-**Print:** ![A4](docs/prints/a4.png)
+**Print:** ![A4](docs/prints/print_a4.png)
 
 ### A5. Buscar por nome
 **O que foi feito:** Criamos a consulta `@Query("SELECT * FROM product WHERE name LIKE :nome")` no DAO, adicionamos um campo de busca e um botão para filtrar produtos por nomes parecidos.  
@@ -77,7 +76,7 @@ suspend fun buscarPorNome(nome: String): List<Product>
 val query = binding.editSearchName.text.toString()
 val products = productDao.buscarPorNome("%$query%")
 ```
-**Print:** ![A5](docs/prints/a5.png)
+**Print:** ![A5](docs/prints/print_a5.png)
 
 ### A6. Excluir produtos
 **O que foi feito:** Criamos a query `@Query("DELETE FROM product")` no DAO e um botão "Excluir Todos" para limpar todos os registros do banco de dados.  
@@ -94,7 +93,7 @@ binding.btnExcluirTodos.setOnClickListener {
     }
 }
 ```
-**Print:** ![A6](docs/prints/a6.png)
+**Print:** ![A6](docs/prints/print_a6.png)
 
 ### A7. Atualizar produto
 **O que foi feito:** Criamos uma função com `@Update` e um método `getById` no DAO, permitindo localizar um produto por ID e alterar seu preço na interface.  
@@ -110,7 +109,7 @@ if (p != null) {
     productDao.updateProduct(updated)
 }
 ```
-**Print:** ![A7](docs/prints/a7.png)
+**Print:** ![A7](docs/prints/print_a78.png) ![A7](docs/prints/print_a78_2.png)
 
 ### A8. Novo campo na tabela
 **O que foi feito:** Adicionamos o atributo `quantity: Int` na entidade `Product`, um campo no layout e aumentamos a versão do banco para `2` no `@Database`.  
@@ -126,7 +125,7 @@ data class Product(
     @ColumnInfo(name = "quantity") val quantity: Int = 0
 )
 ```
-**Print:** ![A8](docs/prints/a8.png)
+**Print:** ![A7](docs/prints/print_a78.png) ![A7](docs/prints/print_a78_2.png)
 
 ## Parte B: Questões dissertativas
 
