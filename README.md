@@ -1,7 +1,7 @@
 # AppRoomProduto: Cadastro de Produtos com Room SQLite
 
-**Aluno(a):** Giovana Taboada  
-**RA:** 230410
+**Alunos:** Giovana Taboada e Gustavo Benevides
+**RA:** 230410 e 216269
 **Disciplina:** Desenvolvimento de Aplicativos Móveis  
 **Professor(a):** Alessandro  
 
@@ -130,34 +130,32 @@ data class Product(
 ## Parte B: Questões dissertativas
 
 ### B1. O que é persistência de dados? O que aconteceria com os produtos cadastrados se, em vez do Room, eles fossem guardados apenas em uma MutableList dentro da MainActivity?
-**Resposta:** Persistência de dados refere-se ao armazenamento de informações de forma duradoura em um meio não volátil (armazenamento interno do dispositivo), permitindo que os dados permaneçam salvos mesmo após fechar o aplicativo ou reiniciar o aparelho. Se utilizássemos apenas uma `MutableList` na `MainActivity`, os dados existiriam exclusivamente na memória RAM e seriam perdidos ao fechar o app ou girar a tela. Com o Room (SQLite), os dados são salvos em arquivo no dispositivo.
+**Resposta:** Persistência de dados é quando as informações continuam salvas mesmo depois de fechar o aplicativo. No nosso projeto, o Room salva os produtos cadastrados. Se usássemos apenas uma MutableList, os dados seriam perdidos ao fechar o aplicativo.
 
 ### B2. Qual é a diferença entre usar o SQLite diretamente (com SQLiteOpenHelper e comandos SQL manuais) e usar o Room? Cite pelo menos duas vantagens do Room.
-**Resposta:** O uso direto do SQLite exige escrever consultas SQL manuais, gerenciar cursores e código repetitivo em subclasses de `SQLiteOpenHelper`. O Room é uma biblioteca de abstração sobre o SQLite. Duas vantagens do Room são: 1) Verificação de consultas em tempo de compilação; 2) Mapeamento automático objeto-relacional (ORM) de tabelas para classes Kotlin.
+**Resposta:** O SQLite exige mais comandos manuais, enquanto o Room facilita o uso do banco de dados. Suas vantagens são reduzir a quantidade de código e ajudar a identificar erros antes da execução do aplicativo.
 
 ### B3. Explique o papel de cada uma das três peças do Room: Entity, DAO e Database. Como elas se relacionam no seu projeto?
 **Resposta:** 
-- **Entity:** Representa a tabela no banco de dados (`Product`).
-- **DAO:** Define os comandos e consultas SQL (`ProductDao`).
-- **Database:** Classe abstrata que gerencia a conexão e expõe os DAOs (`AppDatabase`).
+- **Entity:** Representa os dados dos produtos (`Product`).
+- **DAO:** Realiza operações como cadastrar e consultar (`ProductDao`).
+- **Database:** Gerencia o banco de dados (`AppDatabase`).
 **Relação:** A `MainActivity` instancia o `AppDatabase`, que fornece o `ProductDao` para manipular os registros da tabela mapeada pela `Entity`.
 
 ### B4. Por que o Android não permite acessar o banco de dados na thread principal (UI thread)? O que é um ANR (Application Not Responding)? Como suspend e lifecycleScope.launch resolvem esse problema?
-**Resposta:** A thread principal renderiza a interface e responde a toques; operações demoradas nela causam travamentos e o aviso de **ANR (Application Not Responding)**. As corrotinas com `suspend` e `lifecycleScope.launch` executam as operações de banco em segundo plano (thread de I/O), mantendo a interface fluida.
+**Resposta:** A thread principal cuida da tela, então operações demoradas podem travar o aplicativo e causar um ANR, que significa que ele parou de responder. O suspend e o lifecycleScope.launch permitem executar operações de forma assíncrona, evitando esse problema quando usados corretamente.
 
 ### B5. O que faz o fallbackToDestructiveMigration()? Por que ele é perigoso em um app publicado na Play Store? O que seria uma migração (Migration) de banco de dados?
-**Resposta:** O `fallbackToDestructiveMigration()` destrói e recria o banco do zero quando a versão muda sem um script de migração. É perigoso em produção na Play Store pois **apaga permanentemente os dados dos usuários**. Uma `Migration` é um script explícito que atualiza o esquema do banco preservando os dados existentes.
+**Resposta:** Essa função apaga o banco antigo e cria outro quando não existe uma migração configurada. Isso pode causar perda de dados. Já a Migration permite alterar a estrutura do banco sem apagar as informações salvas.
 
 ### B6. Qual é a vantagem do ViewBinding em relação ao findViewById? Que tipo de erro ele ajuda a evitar?
-**Resposta:** O `ViewBinding` gera referências fortemente tipadas para os componentes de layout em tempo de compilação, eliminando o `findViewById` em tempo de execução e evitando erros de `NullPointerException` e incompatibilidade de tipos.
+**Resposta:** O ViewBinding facilita o acesso aos componentes da tela e deixa o código mais organizado. Também ajuda a evitar erros de tipo e referências incorretas aos componentes do layout.
 
 ### B7. No tutorial, o banco é criado dentro da MainActivity. Por que em apps maiores é recomendado criar o banco como Singleton (uma única instância para o app inteiro)? O que poderia acontecer se várias telas criassem cada um o seu banco?
-**Resposta:** O padrão **Singleton** garante uma única conexão ativa com o banco, otimizando memória e controlando concorrência. Múltiplas instâncias geram alto consumo de memória, sobrecarga e risco de corrupção de dados por acessos concorrentes ao arquivo SQLite.
+**Resposta:** O Singleton permite utilizar uma única instância do banco em todas as telas. Isso evita criar várias instâncias desnecessárias e facilita o acesso aos dados do aplicativo.
 
 ### B8. Reflexão pessoal: quais foram as principais dificuldades que você teve neste projeto e como as resolveu? Cite um app real (de comércio, estoque, saúde, escola etc.) em que a persistência local com Room seria útil e explique como você o aplicaria.
-**Resposta:** 
-- *Dificuldade e solução:* Compatibilidade entre o plugin `kapt` e versões recentes do compilador Kotlin. Resolvido atualizando o Room para a versão `2.8.5`.
-- *Exemplo de app real:* Aplicativo de **Controle de Estoque para Mercearias**. O Room seria aplicado para manter o catálogo de produtos e vendas gravados localmente, permitindo ao comerciante operar mesmo sem conexão com a internet.
+**Resposta:** Tivemos dificuldades na listagem dos produtos, pois as informações ficavam cortadas na tela, e na busca, por causa da diferença entre letras maiúsculas e minúsculas. Um exemplo de uso do Room seria um aplicativo de controle de estoque para mercearias, salvando produtos e vendas localmente e permitindo seu uso mesmo sem internet.
 
 ## Como executar
 1. Clone o repositório
